@@ -1,0 +1,39 @@
+version: '3'
+services:
+  microblog:
+    depends_on:
+      - postgres_db
+    networks:
+      - bakery
+    build: ./microblog/
+    ports:
+      - 5000:5000
+    links:
+      - postgres_db
+    environment:
+      DB_URL: postgresql+psycopg2://postgres:postgres@postgres_db/app.db
+      PERSISTENCE_TYPE: postgres
+    volumes:
+      - ./app-vol:/home/microblog/local-volume
+      - ./shared-volume:/home/microblog/volume-microblog
+
+  postgres_db:
+    networks:
+      - bakery
+    image: postgres:13.1-alpine
+    ports:
+      - 2345:5432
+    environment:
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=postgres"
+      - "POSTGRES_DB=app.db"
+    volumes:
+      - ./postgres/postgres_data:/var/lib/postgresql
+      - ./postgres/dbscripts/postgres:/docker-entrypoint-initdb.d
+      - ./shared-volume:/root/volume-postgres
+
+networks:
+  bakery:
+
+volumes:
+  shared-volume:
