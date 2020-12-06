@@ -1,0 +1,3 @@
+- Write a pipeline that will build in your repo the following flask application - https://github.com/miguelgrinberg/microblog.git
+- Add a post job execution that verifies the application
+- Set up a webhook so that the job will be automatically triggered on every commit
