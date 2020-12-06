@@ -1,0 +1,7 @@
+- Please create a docker-compose.yml that will deploy flask application with postgres as his DB.
+- Few notes:
+  - Use depends_on.
+  - Populate all relevant properties using environment variables.
+  - Both of the containers will be deployed on a custom network named ‘bakery’.
+  - Use local volumes for The webapp and the DB.
+  - Create another shared volume and make sure that both of the containers can read and write to it.
