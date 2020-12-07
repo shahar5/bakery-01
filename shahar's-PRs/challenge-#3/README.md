@@ -1,0 +1,10 @@
+- Make sure you have a Jenkins container as a service, so it will be persistent over your Linux VM restarts.
+- In this VM, there must be a script that runs and configures Jenkins properly:
+  - User authentication and authorization
+  - Relevant plugins (Git, Github, Pipeline)
+  - Github access
+  - Python (pipenv)
+  - Skips Setup Wizard (the initial admin dialog, etc.)
+  - One pipeline job that runs by request:
+    - Takes a Jenkinsfile from a repo
+    - Completes successfully
