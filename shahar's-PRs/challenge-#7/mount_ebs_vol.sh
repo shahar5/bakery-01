@@ -4,7 +4,7 @@ DEVICE=/dev/$(lsblk -n | awk '$NF != "/" {print $1}')
 FS_TYPE=$(file -s $DEVICE | awk '{print $2}')
 MOUNT_POINT=/home/ubuntu/data
 
-if [ "$DEVICE != /dev"]; then
+if [ "$DEVICE" != "/dev"]; then
   # If no FS, then this output contains "data"
   if [ "$FS_TYPE" = "data" ]; then
       echo "Creating file system on $DEVICE"
