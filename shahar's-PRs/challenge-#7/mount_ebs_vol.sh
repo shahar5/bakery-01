@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DEVICE=/dev/$(lsblk -n | awk '$NF != "/" {print $1}')
+DEVICE=/dev/xvdh
 FS_TYPE=$(file -s $DEVICE | awk '{print $2}')
 MOUNT_POINT=/home/ubuntu/data
 
