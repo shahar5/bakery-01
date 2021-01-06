@@ -10,6 +10,9 @@ pipeline {
       }
       stage ('Terraform init') {
         steps {
+          sh 'cd /tmp/source/bakery-01/shahar-PRs/bakery-project/terraform-installer/'
+          sh 'unzip terraform_0.12.0_linux_amd64.zip'
+          sh 'sudo mv terraform /usr/local/bin/'
           sh 'cd /tmp/source/bakery-01/shahar-PRs/bakery-project/'
           sh 'terraform init'
         }
