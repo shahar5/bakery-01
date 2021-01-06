@@ -1,8 +1,3 @@
-# terraform
-variable "tf-version" {
-  default = "<= 0.12.29"
-}
-
 # aws
 variable "region" {
   default = "us-east-1"
