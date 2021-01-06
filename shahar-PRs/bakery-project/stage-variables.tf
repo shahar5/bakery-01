@@ -21,10 +21,10 @@ variable "key-pair" {
 variable "ami-id" {
   type = map
   default = {
-    us-east-1 = "ami-061202d63ee650371"
-    us-east-2 = "ami-0a8251430bac13e68"
-    us-west-1 = "ami-0fd5c97e74dafd86d"
-    us-west-2 = "ami-04c20ec241d42ae4c"
+    "us-east-1" = "ami-061202d63ee650371"
+    "us-east-2" = "ami-0a8251430bac13e68"
+    "us-west-1" = "ami-0fd5c97e74dafd86d"
+    "us-west-2" = "ami-04c20ec241d42ae4c"
 }
 variable "ec2-ins-type" {
   default = "t2.micro"
