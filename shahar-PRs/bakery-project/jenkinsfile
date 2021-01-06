@@ -10,8 +10,7 @@ pipeline {
       }
       stage ('Terraform init') {
         steps {
-          sh 'cd /tmp/source/bakery-01/shahar-PRs/bakery-project/'
-          sh 'terraform init'
+          sh 'terraform init /tmp/source/bakery-01/shahar-PRs/bakery-project/'
         }
       }
       stage ('Terraform plan') {
@@ -21,7 +20,6 @@ pipeline {
             }
         }
         steps {
-          sh 'cd /tmp/source/bakery-01/shahar-PRs/bakery-project/'
           withCredentials([[
             $class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws-creds', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'],
             sshUserPrivateKey(credentialsId: 'aws-key', keyFileVariable: 'aws-key-jen', usernameVariable: 'con-user-jen'),
