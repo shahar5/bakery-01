@@ -38,9 +38,9 @@ resource "aws_security_group" "ubuntu-sg" {
 
 resource "aws_instance" "ubuntu" {
   key_name      = var.key-pair
-  ami           = var.ami-id
+  ami           = var.ami-id[var.region]
   instance_type = var.ec2-ins-type
-  availability_zone = var.region[var.az]
+  availability_zone = "${var.region}c"
 
   tags = {
     Name = var.ec2-ins-tag-name
@@ -79,14 +79,14 @@ resource "aws_instance" "ubuntu" {
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x ${mount-s3-sh-path-dest}",
-      "chmod +x ${mount-ebs-sh-path-dest}"
+      "chmod +x ${var.mount-s3-sh-path-dest}",
+      "chmod +x ${var.mount-ebs-sh-path-dest}"
     ]
   }
 } ## end of resource
 
 resource "aws_ebs_volume" "ebs_bakery_vol" {
-  availability_zone = var.region[var.az]
+  availability_zone = "${var.region}c"
   size              = var.ebs-vol-size
 }
 
@@ -139,8 +139,8 @@ resource "null_resource" "mount-vols" {
 
   provisioner "remote-exec" {
     inline = [
-      "${mount-s3-sh-path-dest} ${AWS_CREDS} ${s3_folder_path}",
-      "${mount-ebs-sh-path-dest} ${data_folder_path}"
+      "${var.mount-s3-sh-path-dest} ${var.AWS_CREDS} ${var.s3_folder_path}",
+      "${var.mount-ebs-sh-path-dest} ${var.data_folder_path}"
     ]
   }
 }

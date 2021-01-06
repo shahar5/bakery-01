@@ -1,3 +1,8 @@
+# terraform
+variable "tf-version" {
+  default = "<= 0.12.29"
+}
+
 # aws
 variable "region" {
   default = "us-east-1"
@@ -5,11 +10,8 @@ variable "region" {
 variable "aws-profile" {
   default = "default"
 }
-
+variable "AWS_CREDS" {}
 # ec2 instance
-variable "az" {
-  default = "c"
-}
 variable "key-pair" {
   default = "Bakery_Key"
 }
@@ -50,6 +52,7 @@ variable "connection-type" {
 variable "connection-user" {
   default = "ubuntu"
 }
+variable "connection-key" {}
 
 # scripts files
 variable "mount-s3-sh-path-source" {
