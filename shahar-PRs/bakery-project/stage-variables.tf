@@ -1,6 +1,6 @@
 # terraform
 variable "tf-version" {
-  default = ">= 0.12.0"
+  default = "<= 0.12.29"
 }
 
 # aws
