@@ -1,14 +1,14 @@
 terraform {
-  required_version = ${tf-version}
+  required_version = var.tf-version
 }
 
 provider "aws" {
-  profile = ${aws-profile}
-  region  = ${region}
+  profile = var.aws-profile
+  region  = var.region
 }
 
 resource "aws_security_group" "ubuntu-sg" {
-  name        = ${sg-name}
+  name        = var.sg-name
 
   ingress {
     from_port   = 22
@@ -32,18 +32,18 @@ resource "aws_security_group" "ubuntu-sg" {
   }
 
   tags = {
-    Name = ${sg-tag-name}
+    Name = var.sg-tag-name
   }
 }
 
 resource "aws_instance" "ubuntu" {
-  key_name      = ${key-pair}
-  ami           = ${ami-id}
-  instance_type = ${ec2-ins-type}
-  availability_zone = ${region}${az}
+  key_name      = var.key-pair
+  ami           = var.ami-id
+  instance_type = var.ec2-ins-type
+  availability_zone = var.region[var.az]
 
   tags = {
-    Name = ${ec2-ins-tag-name}
+    Name = var.ec2-ins-tag-name
   }
 
   vpc_security_group_ids = [
@@ -51,30 +51,30 @@ resource "aws_instance" "ubuntu" {
   ]
 
   ebs_block_device {
-    device_name = ${ec2-ins-vol-dev-name}
-    volume_type = ${ec2-ins-vol-type}
-    volume_size = ${ec2-ins-vol-size}
-    delete_on_termination = ${ec2-ins-vol-del-bool}
+    device_name = var.ec2-ins-vol-dev-name
+    volume_type = var.ec2-ins-vol-type
+    volume_size = var.ec2-ins-vol-size
+    delete_on_termination = var.ec2-ins-vol-del-bool
   }
 
 #  lifecycle {
 #   ignore_changes = [ebs_block_device]
  #}
   connection {
-    type        = ${connection-type}
-    user        = ${connection-user}
-    private_key = ${connection-key}
-    host        = ${connection-host}
+    type        = var.connection-type
+    user        = var.connection-user
+    private_key = var.connection-key
+    host        = var.connection-host
   }
 
   provisioner "file" {
-    source      = ${mount-s3-sh-path-source}
-    destination = ${mount-s3-sh-path-dest}
+    source      = var.mount-s3-sh-path-source
+    destination = var.mount-s3-sh-path-dest
   }
 
   provisioner "file" {
-    source      = ${mount-ebs-sh-path-source}
-    destination = ${mount-ebs-sh-path-dest}
+    source      = var.mount-ebs-sh-path-source
+    destination = var.mount-ebs-sh-path-dest
   }
 
   provisioner "remote-exec" {
@@ -86,33 +86,33 @@ resource "aws_instance" "ubuntu" {
 } ## end of resource
 
 resource "aws_ebs_volume" "ebs_bakery_vol" {
-  availability_zone = ${region}${az}
-  size              = ${ebs-vol-size}
+  availability_zone = var.region[var.az]
+  size              = var.ebs-vol-size
 }
 
 resource "aws_volume_attachment" "ebs_attach" {
-  device_name = ${ebs-att-dev-name}
+  device_name = var.ebs-att-dev-name
   volume_id   = aws_ebs_volume.ebs_bakery_vol.id
   instance_id = aws_instance.ubuntu.id
 }
 
 resource "aws_s3_bucket" "bakery-bucket-2" {
-  bucket = ${s3-bucket-name}
-  acl    = ${s3-bucket-acl}
+  bucket = var.s3-bucket-name
+  acl    = var.s3-bucket-acl
 
   tags = {
-    Name        = ${s3-bucket-tag-name}
-    Environment = ${s3-bucket-tag-env}
+    Name        = var.s3-bucket-tag-name
+    Environment = var.s3-bucket-tag-env
   }
 }
 
 # Upload an object
 resource "aws_s3_bucket_object" "s3_file" {
-  bucket = ${s3-bucket-name}
-  key    = ${s3-bucket-obj-key}
-  acl    = ${s3-bucket-obj-acl}
-  source = ${s3-bucket-obj-path}
-  etag = filemd5(${s3-bucket-obj-path})
+  bucket = var.s3-bucket-name
+  key    = var.s3-bucket-obj-key
+  acl    = var.s3-bucket-obj-acl
+  source = var.s3-bucket-obj-path
+  etag = filemd5(var.s3-bucket-obj-path)
 
   depends_on = [
     aws_s3_bucket.bakery-bucket-2,
@@ -131,9 +131,9 @@ resource "null_resource" "mount-vols" {
   }
 
   connection {
-    type        = ${connection-type}
-    user        = ${connection-user}
-    private_key = ${connection-key}
+    type        = var.connection-type
+    user        = var.connection-user
+    private_key = var.connection-key
     host        = aws_instance.ubuntu.public_ip
   }
 
