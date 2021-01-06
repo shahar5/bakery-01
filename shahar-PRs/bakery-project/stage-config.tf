@@ -1,5 +1,5 @@
 terraform {
-  required_version = var.tf-version
+  required_version = "<= 0.12.29"
 }
 
 provider "aws" {
