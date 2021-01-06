@@ -1,11 +1,6 @@
 pipeline {
     agent any
-    stages ('Create') {
-      when {
-          expression {
-              params.action == 'Create'
-          }
-      }
+    stages {
       stage ('SCM') {
         steps {
           sh 'rm -rf /tmp/source'
@@ -15,13 +10,18 @@ pipeline {
       }
       stage ('Terraform init') {
         steps {
-          sh 'cd /tmp/source/bakery-01/shahar\'s-PRs/bakery-project/'
+          sh "cd /tmp/source/bakery-01/shahar's-PRs/bakery-project/"
           sh 'terraform init'
         }
       }
       stage ('Terraform plan') {
+        when {
+            expression {
+                params.action == 'Create'
+            }
+        }
         steps {
-          sh 'cd /tmp/source/bakery-01/shahar\'s-PRs/bakery-project/'
+          sh "cd /tmp/source/bakery-01/shahar's-PRs/bakery-project/"
           withCredentials([[
             $class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws-creds', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'],
             sshUserPrivateKey(credentialsId: 'aws-key', keyFileVariable: 'aws-key-jen', usernameVariable: 'con-user-jen'),
@@ -31,8 +31,13 @@ pipeline {
         }
       }
       stage ('Terraform apply') {
+        when {
+            expression {
+                params.action == 'Create'
+            }
+        }
         steps {
-          sh 'cd /tmp/source/bakery-01/shahar\'s-PRs/bakery-project/'
+          sh "cd /tmp/source/bakery-01/shahar's-PRs/bakery-project/"
           sh 'terraform apply --auto-approve'
         }
       }
