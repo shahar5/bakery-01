@@ -25,6 +25,7 @@ variable "ami-id" {
     "us-east-2" = "ami-0a8251430bac13e68"
     "us-west-1" = "ami-0fd5c97e74dafd86d"
     "us-west-2" = "ami-04c20ec241d42ae4c"
+  }
 }
 variable "ec2-ins-type" {
   default = "t2.micro"
@@ -53,9 +54,6 @@ variable "connection-type" {
 }
 variable "connection-user" {
   default = "ubuntu"
-}
-variable "connection-host" {
-  default = self.public_ip
 }
 
 # scripts files
