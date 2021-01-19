@@ -37,7 +37,7 @@ resource "aws_security_group" "ubuntu-sg" {
 }
 
 resource "aws_instance" "ubuntu" {
-  key_name      = var.key-pair
+  key_name      = var.connection-key
   ami           = var.ami-id[var.region]
   instance_type = var.ec2-ins-type
   availability_zone = "${var.region}c"
