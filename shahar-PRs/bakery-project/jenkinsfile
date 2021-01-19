@@ -33,8 +33,7 @@ pipeline {
             }
         }
         steps {
-          sh 'cd /tmp/source/bakery-01/shahar-PRs/bakery-project/'
-          sh 'terraform apply --auto-approve'
+          sh 'terraform apply --auto-approve /tmp/source/bakery-01/shahar-PRs/bakery-project/'
         }
       }
     }
