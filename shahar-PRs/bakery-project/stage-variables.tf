@@ -53,7 +53,7 @@ variable "connection-user" {
   default = "ubuntu"
 }
 variable "connection-key" {
-  default = "/tmp/key/Bakery_Project"
+  default = "/tmp/source/bakery-01/shahar-PRs/bakery-project/Bakery_Project"
 }
 
 # scripts files
