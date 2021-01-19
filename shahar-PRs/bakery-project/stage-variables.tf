@@ -52,7 +52,9 @@ variable "connection-type" {
 variable "connection-user" {
   default = "ubuntu"
 }
-variable "connection-key" {}
+variable "connection-key" {
+  default = "/tmp/key/Bakery_Project"
+}
 
 # scripts files
 variable "mount-s3-sh-path-source" {
