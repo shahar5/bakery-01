@@ -13,7 +13,7 @@ variable "aws-profile" {
 variable "AWS_CREDS" {}
 # ec2 instance
 variable "key-pair" {
-  default = "Bakery_Key.pem"
+  default = "Bakery_Project"
 }
 variable "ami-id" {
   type = map

@@ -6,7 +6,7 @@ pipeline {
           sh 'rm -rf /tmp/source'
           sh 'mkdir /tmp/source'
           sh 'cd /tmp/source && git clone "https://github.com/shahar5/bakery-01.git"'
-          sh 'cp /tmp/key/Bakery_Key.pem /tmp/source/bakery-01/shahar-PRs/bakery-project/'
+          sh 'cp /root/.ssh/Bakery_Project /tmp/source/bakery-01/shahar-PRs/bakery-project/'
         }
       }
       stage ('Terraform init') {
