@@ -99,7 +99,7 @@ variable "s3-bucket-obj-acl" {
   default = "private"
 }
 variable "s3-bucket-obj-path" {
-  default = "shahar's-PRs/bakery-project/s3-materials/some-txt-file.txt"
+  default = "shahar's-PRs/bakery-project/s3-materials/some_txt_file.txt"
 }
 variable "s3_folder_path" {
   default = "bucket"
