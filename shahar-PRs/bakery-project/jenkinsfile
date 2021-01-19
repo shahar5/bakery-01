@@ -10,6 +10,7 @@ pipeline {
       }
       stage ('Terraform init') {
         steps {
+          sh 'cd /tmp/source/bakery-01/shahar-PRs/bakery-project/'
           sh 'terraform init /tmp/source/bakery-01/shahar-PRs/bakery-project/'
         }
       }
@@ -20,8 +21,9 @@ pipeline {
             }
         }
         steps {
+          sh 'cd /tmp/source/bakery-01/shahar-PRs/bakery-project/'
           withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws-creds', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'], sshUserPrivateKey(credentialsId: 'aws-key', keyFileVariable: 'aws-key-jen', usernameVariable: 'con-user-jen')]) {
-            sh 'terraform plan -var \'region=${params.region}\' -var \'connection-key=${aws-key-jen}\' -var \'connection-user=${con-user-jen}\' -var \'AWS_CREDS=${AWS_ACCESS_KEY_ID}:${AWS_SECRET_ACCESS_KEY}\' -var \'s3_folder_path=${params.s3_folder_path}\' -var \'data_folder_path=${params.data_folder_path}\''
+            sh "terraform plan -var 'region=${params.region}' -var 'connection-key=${aws-key-jen}' -var 'connection-user=${con-user-jen}' -var 'AWS_CREDS=${AWS_ACCESS_KEY_ID}:${AWS_SECRET_ACCESS_KEY}' -var 's3_folder_path=${params.s3_folder_path}' -var 'data_folder_path=${params.data_folder_path}'"
           }
         }
       }
