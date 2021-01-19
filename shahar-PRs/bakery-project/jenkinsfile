@@ -4,7 +4,7 @@ pipeline {
       stage ('SCM') {
         steps {
           sh 'apt-get update'
-          sh 'apt-get install awscli'
+          sh 'apt-get install awscli -y'
           sh 'rm -rf /tmp/source'
           sh 'mkdir /tmp/source'
           sh 'cd /tmp/source && git clone "https://github.com/shahar5/bakery-01.git"'
