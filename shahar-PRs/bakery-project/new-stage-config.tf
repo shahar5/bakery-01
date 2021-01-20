@@ -63,7 +63,7 @@ resource "aws_instance" "ubuntu" {
   connection {
     type        = var.connection-type
     user        = var.connection-user
-    private_key = var.connection-key
+    private_key = file(var.connection-key)
     host        = self.public_ip
   }
 
@@ -133,7 +133,7 @@ resource "null_resource" "mount-vols" {
   connection {
     type        = var.connection-type
     user        = var.connection-user
-    private_key = var.connection-key
+    private_key = file(var.connection-key)
     host        = aws_instance.ubuntu.public_ip
   }
 
