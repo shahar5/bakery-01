@@ -5,6 +5,7 @@
 MOUNT_POINT=$(ls -la /home/ubuntu/ | grep bucket  > /tmp/mp-check.txt && cat /tmp/mp-check.txt | awk '{print $9}')
 # AWS_CREDS get value on build from jenkins creds
 AWS_CREDS=$1
+s3_folder_path=$2
 # run only if $MOUNT_POINT is NULL
 if [ -z "$MOUNT_POINT" ]; then
   rm /tmp/mp-check.txt

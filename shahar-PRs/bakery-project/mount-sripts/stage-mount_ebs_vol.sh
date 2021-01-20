@@ -1,6 +1,6 @@
 #!/bin/bash
 # this script suppose to mount ebs volume (aws) on ec2 machine with ubuntu as os
-
+data_folder_path=$1
 DEVICE=/dev/xvdh
 FS_TYPE=$(sudo file -s $DEVICE > /tmp/fs-test.txt && cat /tmp/fs-test.txt | awk '{print $2}')
 MOUNT_POINT=/home/ubuntu/$data_folder_path
