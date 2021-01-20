@@ -58,13 +58,13 @@ variable "connection-key" {
 
 # scripts files
 variable "mount-s3-sh-path-source" {
-  default = "/tmp/source/bakery-01/shahar-PRs/bakery-project/mount-sripts/mount_s3_bucket.sh"
+  default = "/tmp/source/bakery-01/shahar-PRs/bakery-project/mount-sripts/stage-mount_s3_bucket.sh"
 }
 variable "mount-s3-sh-path-dest" {
   default = "/tmp/mount_s3_bucket.sh"
 }
 variable "mount-ebs-sh-path-source" {
-  default = "/tmp/source/bakery-01/shahar-PRs/bakery-project/mount-sripts/mount_ebs_vol.sh"
+  default = "/tmp/source/bakery-01/shahar-PRs/bakery-project/mount-sripts/stage-mount_ebs_vol.sh"
 }
 variable "mount-ebs-sh-path-dest" {
   default = "/tmp/mount_ebs_vol.sh"
