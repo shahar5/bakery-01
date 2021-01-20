@@ -18,10 +18,10 @@ variable "key-pair" {
 variable "ami-id" {
   type = map
   default = {
-    "us-east-1" = "ami-0be2609ba883822ec"
-    "us-east-2" = "ami-0a0ad6b70e61be944"
-    "us-west-1" = "ami-03130878b60947df3"
-    "us-west-2" = "ami-0a36eb8fadc976275"
+    "us-east-1" = "ami-00ddb0e5626798373"
+    "us-east-2" = "ami-0dd9f0e7df0f0a138"
+    "us-west-1" = "ami-0a741b782c2c8632d"
+    "us-west-2" = "ami-0ac73f33a1888c64a"
   }
 }
 variable "ec2-ins-type" {
