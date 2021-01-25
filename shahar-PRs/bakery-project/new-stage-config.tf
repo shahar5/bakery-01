@@ -10,25 +10,26 @@ provider "aws" {
 resource "aws_security_group" "ubuntu-sg" {
   name        = var.sg-name
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-# 443 port is for s3fs
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+  dynamic "ingress" {
+    for_each = var.ingress_rules
+    content {
+      from_port   = ingress.value.from_port
+      to_port     = ingress.value.to_port
+      protocol    = ingress.value.protocol
+      cidr_blocks = ingress.value.cidr_blocks
+      description = ingress.value.description
+    }
   }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+  dynamic "egress" {
+    for_each = var.engress_rules
+    content {
+      from_port   = engress.value.from_port
+      to_port     = engress.value.to_port
+      protocol    = engress.value.protocol
+      cidr_blocks = engress.value.cidr_blocks
+      description = engress.value.description
+    }
   }
 
   tags = {
@@ -40,7 +41,7 @@ resource "aws_instance" "ubuntu" {
   key_name      = var.key-pair
   ami           = var.ami-id[var.region]
   instance_type = var.ec2-ins-type
-  availability_zone = "${var.region}c"
+  availability_zone = "${var.region}${var.az}"
 
   tags = {
     Name = var.ec2-ins-tag-name
@@ -86,7 +87,7 @@ resource "aws_instance" "ubuntu" {
 } ## end of resource
 
 resource "aws_ebs_volume" "ebs_bakery_vol" {
-  availability_zone = "${var.region}c"
+  availability_zone = "${var.region}${var.az}"
   size              = var.ebs-vol-size
 }
 

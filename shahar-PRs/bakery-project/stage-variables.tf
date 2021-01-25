@@ -7,6 +7,9 @@ variable "tf-version" {
 variable "region" {
   default = "us-east-1"
 }
+variable "az" {
+  default = "c"
+}
 variable "aws-profile" {
   default = "default"
 }
@@ -113,4 +116,35 @@ variable "sg-name" {
 }
 variable "sg-tag-name" {
   default = "terraform-sg"
+}
+variable "ingress_rules" {
+  type = map
+  default = {
+    "SSH_rule" = {
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+      description = "SSH"
+    },
+    "HTTPS_rule" = {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+      description = "HTTPS"
+    }
+  }
+}
+variable "engress_rules" {
+  type = map
+  default = {
+    "allow_all_rule" = {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+      description = "allow_all"
+    }
+  }
 }
