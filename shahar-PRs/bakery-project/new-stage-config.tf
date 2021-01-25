@@ -21,7 +21,7 @@ resource "aws_security_group" "ubuntu-sg" {
     }
   }
 
-  dynamic "egress" {
+  dynamic "engress" {
     for_each = var.engress_rules
     content {
       from_port   = engress.value.from_port
