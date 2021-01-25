@@ -52,6 +52,7 @@ resource "aws_route_table_association" "Bakery_rt_asso" {
 resource "aws_security_group" "ubuntu-sg" {
   name        = var.sg-name
   vpc_id      = aws_vpc.Bakery_VPC.id
+  depends_on  = [aws_vpc.Bakery_VPC]
 
   dynamic "ingress" {
     for_each = var.ingress_rules
