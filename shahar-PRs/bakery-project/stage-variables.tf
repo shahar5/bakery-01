@@ -136,7 +136,7 @@ variable "ingress_rules" {
     }
   }
 }
-variable "engress_rules" {
+variable "egress_rules" {
   type = map
   default = {
     "allow_all_rule" = {

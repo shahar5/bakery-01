@@ -21,14 +21,14 @@ resource "aws_security_group" "ubuntu-sg" {
     }
   }
 
-  dynamic "engress" {
-    for_each = var.engress_rules
+  dynamic "egress" {
+    for_each = var.egress_rules
     content {
-      from_port   = engress.value.from_port
-      to_port     = engress.value.to_port
-      protocol    = engress.value.protocol
-      cidr_blocks = engress.value.cidr_blocks
-      description = engress.value.description
+      from_port   = egress.value.from_port
+      to_port     = egress.value.to_port
+      protocol    = egress.value.protocol
+      cidr_blocks = egress.value.cidr_blocks
+      description = egress.value.description
     }
   }
 
