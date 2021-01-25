@@ -7,8 +7,51 @@ provider "aws" {
   region  = var.region
 }
 
+resource "aws_vpc" "Bakery_VPC" {
+  cidr_block       = "10.0.0.0/16"
+  tags = {
+    Name = "Bakery_VPC"
+  }
+}
+
+resource "aws_subnet" "Bakery_SUB" {
+  vpc_id     = aws_vpc.Bakery_VPC.id
+  cidr_block = "10.0.1.0/24"
+
+  tags = {
+    Name = "Bakery_SUB"
+  }
+}
+
+resource "aws_internet_gateway" "Bakery_GW" {
+  vpc_id = aws_vpc.Bakery_VPC.id
+
+  tags = {
+    Name = "Bakery_GW"
+  }
+}
+
+resource "aws_route_table" "Bakery_RT" {
+  vpc_id = aws_vpc.Bakery_VPC.id
+  tags = {
+    Name        = "Bakery_RT"
+  }
+}
+
+resource "aws_route" "Bakery_Route" {
+  route_table_id         = aws_route_table.Bakery_RT.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.Bakery_GW.id
+}
+
+resource "aws_route_table_association" "Bakery_rt_asso" {
+  subnet_id      = aws_subnet.Bakery_SUB.id
+  route_table_id = aws_route_table.Bakery_RT.id
+}
+
 resource "aws_security_group" "ubuntu-sg" {
   name        = var.sg-name
+  vpc_id      = aws_vpc.Bakery_VPC.id
 
   dynamic "ingress" {
     for_each = var.ingress_rules
