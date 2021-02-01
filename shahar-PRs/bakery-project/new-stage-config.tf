@@ -8,8 +8,8 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias = var.region-alias
-  region  = var.bucket-region
+  alias = "virginia"
+  region  = "us-east-1"
 }
 
 resource "aws_vpc" "Bakery_VPC" {
@@ -149,7 +149,7 @@ resource "aws_volume_attachment" "ebs_attach" {
 }
 
 resource "aws_s3_bucket" "bakery-bucket-2" {
-  provider = "${var.provider}.${var.region-alias}"
+  provider = aws.virginia
   bucket = var.s3-bucket-name
   acl    = var.s3-bucket-acl
 

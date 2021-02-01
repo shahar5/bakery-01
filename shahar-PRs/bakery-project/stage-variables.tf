@@ -7,15 +7,6 @@ variable "tf-version" {
 variable "region" {
   default = "us-east-1"
 }
-variable "provider" {
-  default = "aws"
-}
-variable "region-alias" {
-  default = "virginia"
-}
-variable "bucket-region" {
-  default = "us-east-1"
-}
 variable "az" {
   default = "f"
 }
