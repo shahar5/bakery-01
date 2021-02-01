@@ -88,9 +88,6 @@ variable "data_folder_path" {
 variable "s3-bucket-name" {
   default = "bakery-bucket-2"
 }
-variable "s3-bucket-region" {
-  default = "us-east-1"
-}
 variable "s3-bucket-acl" {
   default = "private"
 }

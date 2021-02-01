@@ -7,10 +7,10 @@ provider "aws" {
   region  = var.region
 }
 
-#provider "aws" {
-#  alias = "virginia"
-#  region  = "us-east-1"
-#}
+provider "aws" {
+  alias = "virginia"
+  region  = "us-east-1"
+}
 
 resource "aws_vpc" "Bakery_VPC" {
   cidr_block       = "10.0.0.0/16"
@@ -149,7 +149,7 @@ resource "aws_volume_attachment" "ebs_attach" {
 }
 
 resource "aws_s3_bucket" "bakery-bucket-2" {
-  region = var.s3-bucket-region
+  provider = "aws.virginia"
   bucket = var.s3-bucket-name
   acl    = var.s3-bucket-acl
 
