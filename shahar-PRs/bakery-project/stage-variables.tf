@@ -10,7 +10,7 @@ variable "region" {
 variable "provider" {
   default = "aws"
 }
-variable "provider-alias" {
+variable "region-alias" {
   default = "virginia"
 }
 variable "bucket-region" {
