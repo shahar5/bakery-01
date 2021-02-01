@@ -87,6 +87,7 @@ resource "aws_instance" "ubuntu" {
   instance_type = var.ec2-ins-type
   availability_zone = "${var.region}${var.az}"
   subnet_id     = aws_subnet.Bakery_SUB.id
+  associate_public_ip_address = true
 
   tags = {
     Name = var.ec2-ins-tag-name
