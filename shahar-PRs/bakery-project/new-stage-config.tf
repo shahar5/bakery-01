@@ -175,7 +175,7 @@ resource "aws_s3_bucket_object" "s3_file" {
 resource "null_resource" "mount-vols" {
 
   depends_on = [
-    aws_s3_bucket.bakery-bucket-2,
+    # aws_s3_bucket.bakery-bucket-2,
     aws_volume_attachment.ebs_attach
   ]
 
