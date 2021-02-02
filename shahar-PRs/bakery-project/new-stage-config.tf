@@ -149,7 +149,7 @@ resource "aws_volume_attachment" "ebs_attach" {
 }
 
 resource "aws_s3_bucket" "bakery-bucket-2" {
-  provider = "aws.virginia"
+  provider = aws.virginia
   bucket = var.s3-bucket-name
   acl    = var.s3-bucket-acl
 
@@ -161,6 +161,7 @@ resource "aws_s3_bucket" "bakery-bucket-2" {
 
 # Upload an object
 resource "aws_s3_bucket_object" "s3_file" {
+  provider = aws.virginia
   bucket = var.s3-bucket-name
   key    = var.s3-bucket-obj-key
   acl    = var.s3-bucket-obj-acl
