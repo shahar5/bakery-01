@@ -8,39 +8,37 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias = "virginia"
+  alias   = "virginia"
   region  = "us-east-1"
 }
 
 resource "aws_vpc" "Bakery_VPC" {
-  cidr_block       = var.VPC_cidr
-  tags = {
-    Name = var.VPC_name
+  cidr_block = var.VPC_cidr
+  tags       = {
+    Name     = var.VPC_name
   }
 }
 
 resource "aws_subnet" "Bakery_SUB" {
-  vpc_id     = aws_vpc.Bakery_VPC.id
-  cidr_block = var.SUB_cidr
+  vpc_id            = aws_vpc.Bakery_VPC.id
+  cidr_block        = var.SUB_cidr
   availability_zone = "${var.region}${var.az}"
-
-  tags = {
-    Name = var.SUB_name
+  tags              = {
+    Name            = var.SUB_name
   }
 }
 
 resource "aws_internet_gateway" "Bakery_GW" {
   vpc_id = aws_vpc.Bakery_VPC.id
-
-  tags = {
+  tags   = {
     Name = var.GW_name
   }
 }
 
 resource "aws_route_table" "Bakery_RT" {
   vpc_id = aws_vpc.Bakery_VPC.id
-  tags = {
-    Name        = var.RT_name
+  tags   = {
+    Name = var.RT_name
   }
 }
 
@@ -82,37 +80,30 @@ resource "aws_security_group" "ubuntu-sg" {
     }
   }
 
-  tags = {
+  tags   = {
     Name = var.sg-tag-name
   }
 }
 
 resource "aws_instance" "ubuntu" {
-  key_name      = var.key-pair
-  ami           = var.ami-id[var.region]
-  instance_type = var.ec2-ins-type
-  availability_zone = "${var.region}${var.az}"
-  subnet_id     = aws_subnet.Bakery_SUB.id
+  key_name                    = var.key-pair
+  ami                         = var.ami-id[var.region]
+  instance_type               = var.ec2-ins-type
+  availability_zone           = "${var.region}${var.az}"
+  subnet_id                   = aws_subnet.Bakery_SUB.id
   associate_public_ip_address = true
-
-  tags = {
-    Name = var.ec2-ins-tag-name
+  tags                        = {
+    Name                      = var.ec2-ins-tag-name
   }
-
-  vpc_security_group_ids = [
-    aws_security_group.ubuntu-sg.id
-  ]
+  vpc_security_group_ids      = [aws_security_group.ubuntu-sg.id]
 
   ebs_block_device {
-    device_name = var.ec2-ins-vol-dev-name
-    volume_type = var.ec2-ins-vol-type
-    volume_size = var.ec2-ins-vol-size
+    device_name           = var.ec2-ins-vol-dev-name
+    volume_type           = var.ec2-ins-vol-type
+    volume_size           = var.ec2-ins-vol-size
     delete_on_termination = var.ec2-ins-vol-del-bool
   }
 
-#  lifecycle {
-#   ignore_changes = [ebs_block_device]
- #}
   connection {
     type        = var.connection-type
     user        = var.connection-user
@@ -136,7 +127,7 @@ resource "aws_instance" "ubuntu" {
       "chmod +x ${var.mount-ebs-sh-path-dest}"
     ]
   }
-} ## end of resource
+} ## end of ec2 instance resource
 
 resource "aws_ebs_volume" "ebs_bakery_vol" {
   availability_zone = "${var.region}${var.az}"
@@ -150,11 +141,10 @@ resource "aws_volume_attachment" "ebs_attach" {
 }
 
 resource "aws_s3_bucket" "bakery-bucket-2" {
-  provider = aws.virginia
-  bucket = var.s3-bucket-name
-  acl    = var.s3-bucket-acl
-
-  tags = {
+  provider      = aws.virginia
+  bucket        = var.s3-bucket-name
+  acl           = var.s3-bucket-acl
+  tags          = {
     Name        = var.s3-bucket-tag-name
     Environment = var.s3-bucket-tag-env
   }
@@ -163,15 +153,13 @@ resource "aws_s3_bucket" "bakery-bucket-2" {
 # Upload an object
 resource "aws_s3_bucket_object" "s3_file" {
   provider = aws.virginia
-  bucket = var.s3-bucket-name
-  key    = var.s3-bucket-obj-key
-  acl    = var.s3-bucket-obj-acl
-  source = var.s3-bucket-obj-path
-  etag = filemd5(var.s3-bucket-obj-path)
+  bucket   = var.s3-bucket-name
+  key      = var.s3-bucket-obj-key
+  acl      = var.s3-bucket-obj-acl
+  source   = var.s3-bucket-obj-path
+  etag     = filemd5(var.s3-bucket-obj-path)
 
-  depends_on = [
-    aws_s3_bucket.bakery-bucket-2,
-  ]
+  depends_on = [aws_s3_bucket.bakery-bucket-2]
 }
 
 resource "null_resource" "mount-vols" {
@@ -181,7 +169,7 @@ resource "null_resource" "mount-vols" {
     aws_volume_attachment.ebs_attach
   ]
 
-  triggers = {
+  triggers     = {
     always_run = "${timestamp()}"
   }
 
