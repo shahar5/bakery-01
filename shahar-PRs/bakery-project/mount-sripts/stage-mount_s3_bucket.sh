@@ -14,8 +14,6 @@ if [ -z "$MOUNT_POINT" ]; then
   echo $AWS_CREDS > /home/ubuntu/.passwd-s3fs
   chmod 600 /home/ubuntu/.passwd-s3fs
   mkdir /home/ubuntu/$s3_folder_path
-  s3fs bakery-bucket-2 /home/ubuntu/$s3_folder_path
-  sudo chown ubuntu /home/ubuntu/$s3_folder_path
-  chmod 775 /home/ubuntu/$s3_folder_path/my_file
+  s3fs bakery-bucket-2 /home/ubuntu/$s3_folder_path -o umask=0007,uid=1000
   date >> /home/ubuntu/$s3_folder_path/my_file
 fi
