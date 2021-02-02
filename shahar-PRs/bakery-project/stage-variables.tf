@@ -8,7 +8,7 @@ variable "region" {
   default = "us-east-1"
 }
 variable "az" {
-  default = "f"
+  default = "c"
 }
 variable "aws-profile" {
   default = "default"
