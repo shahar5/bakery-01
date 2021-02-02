@@ -13,19 +13,19 @@ provider "aws" {
 }
 
 resource "aws_vpc" "Bakery_VPC" {
-  cidr_block       = "10.0.0.0/16"
+  cidr_block       = var.VPC_cidr
   tags = {
-    Name = "Bakery_VPC"
+    Name = var.VPC_name
   }
 }
 
 resource "aws_subnet" "Bakery_SUB" {
   vpc_id     = aws_vpc.Bakery_VPC.id
-  cidr_block = "10.0.1.0/24"
+  cidr_block = var.SUB_cidr
   availability_zone = "${var.region}${var.az}"
 
   tags = {
-    Name = "Bakery_SUB"
+    Name = var.SUB_name
   }
 }
 
@@ -33,20 +33,20 @@ resource "aws_internet_gateway" "Bakery_GW" {
   vpc_id = aws_vpc.Bakery_VPC.id
 
   tags = {
-    Name = "Bakery_GW"
+    Name = var.GW_name
   }
 }
 
 resource "aws_route_table" "Bakery_RT" {
   vpc_id = aws_vpc.Bakery_VPC.id
   tags = {
-    Name        = "Bakery_RT"
+    Name        = var.RT_name
   }
 }
 
 resource "aws_route" "Bakery_Route" {
   route_table_id         = aws_route_table.Bakery_RT.id
-  destination_cidr_block = "0.0.0.0/0"
+  destination_cidr_block = var.route_dest_cidr
   gateway_id             = aws_internet_gateway.Bakery_GW.id
 }
 
