@@ -1,5 +1,12 @@
 pipeline {
     agent any
+    parameters {
+      choice(name: 'region', choices: ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2'], description: 'Pick a Region to Deploy')
+      string(name: 's3_folder_path', defaultValue: 'bucket', description: 's3 bucket - on path /home/centos/${s3_folder_path}')
+      string(name: 'data_folder_path', defaultValue: 'data', description: 'EBS volume - on path /home/centos/${data_folder_path}')
+      choice(name: 'action', choices: ['Create', 'Destroy'], description: 'Create / Destroy')
+      booleanParam(name: 'destroy_volumes', defaultValue: false, description: 'If you mark this choice, you will delete both S3 and EBS volumes')
+    }
     stages {
       stage ('SCM') {
         steps {
