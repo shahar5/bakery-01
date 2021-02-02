@@ -15,6 +15,7 @@ if [ -z "$MOUNT_POINT" ]; then
   chmod 600 /home/ubuntu/.passwd-s3fs
   mkdir /home/ubuntu/$s3_folder_path
   s3fs bakery-bucket-2 /home/ubuntu/$s3_folder_path
+  sudo chown ubuntu /home/ubuntu/$s3_folder_path
   chmod 775 /home/ubuntu/$s3_folder_path/my_file
   date >> /home/ubuntu/$s3_folder_path/my_file
 fi
