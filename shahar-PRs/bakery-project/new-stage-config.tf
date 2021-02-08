@@ -1,5 +1,12 @@
 terraform {
   required_version = "<= 0.12.29"
+  backend "artifactory" {
+    url      = "http://35.181.4.84:8081/nexus/content/sites/"
+    repo     = "Bakery_Proj_repo"
+    subpath  = var.region
+    username = "admin"
+    password = "admin123"
+  }
 }
 
 provider "aws" {
