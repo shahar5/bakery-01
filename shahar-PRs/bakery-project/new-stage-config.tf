@@ -1,9 +1,9 @@
 terraform {
   required_version = "<= 0.12.29"
   backend "artifactory" {
-    url      = "http://35.181.4.84:8081/nexus/content/repositories/"
+    url      = "http://15.237.37.144:8081/nexus/content/repositories/"
     repo     = "test"
-    subpath  = "111"
+    subpath  = var.region
     username = "admin"
     password = "admin123"
   }
