@@ -3,7 +3,7 @@ terraform {
   backend "artifactory" {
     url      = "http://15.237.37.144:8081/nexus/content/repositories/"
     repo     = "test"
-    subpath  = var.region
+    subpath  = "123"
     username = "admin"
     password = "admin123"
   }
