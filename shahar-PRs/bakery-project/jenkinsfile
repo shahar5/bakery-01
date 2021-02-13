@@ -37,13 +37,13 @@ pipeline {
             protocol: 'http',
             nexusUrl: '15.237.112.113/:8081',
             groupId: 'Bakery-terraform-artifactory',
-            version: ${env.BUILD_NUMBER},
+            version: "${env.BUILD_NUMBER}",
             repository: 'test',
             credentialsId: 'nexus-creds',
             artifacts: [
-                [artifactId: projectName,
+                [artifactId: "Bakery_Project",
                 classifier: '',
-                file: 'out_' + ${env.BUILD_NUMBER} + '.tf',
+                file: "out_${env.BUILD_NUMBER}.tf",
                 type: 'tf']
                 ]
             )
