@@ -28,24 +28,26 @@ pipeline {
             }
         }
         steps {
-          withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws_creds', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'], sshUserPrivateKey(credentialsId: 'aws_key', keyFileVariable: '', passphraseVariable: '', usernameVariable: 'con_user_jen')]) {
-            sh "terraform plan -var 'region=${params.region}' -var 'connection-user=${con_user_jen}' -var 'AWS_CREDS=${AWS_ACCESS_KEY_ID}:${AWS_SECRET_ACCESS_KEY}' -var 's3_folder_path=${params.s3_folder_path}' -var 'data_folder_path=${params.data_folder_path}' /tmp/source/bakery-01/shahar-PRs/bakery-project/"
-          }
+          dir ('/tmp/source/bakery-01/shahar-PRs/bakery-project/') {
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws_creds', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'], sshUserPrivateKey(credentialsId: 'aws_key', keyFileVariable: '', passphraseVariable: '', usernameVariable: 'con_user_jen')]) {
+              sh "terraform plan -var 'region=${params.region}' -var 'connection-user=${con_user_jen}' -var 'AWS_CREDS=${AWS_ACCESS_KEY_ID}:${AWS_SECRET_ACCESS_KEY}' -var 's3_folder_path=${params.s3_folder_path}' -var 'data_folder_path=${params.data_folder_path}' -out=out_${env.BUILD_NUMBER}.tf"
+            }
           nexusArtifactUploader(
             nexusVersion: 'nexus2',
             protocol: 'http',
             nexusUrl: '15.237.112.113/:8081',
             groupId: 'Bakery-terraform-artifactory',
-            version: version,
+            version: ${env.BUILD_NUMBER},
             repository: 'test',
             credentialsId: 'nexus-creds',
             artifacts: [
                 [artifactId: projectName,
                 classifier: '',
-                file: 'out' + version + '.tf',
+                file: 'out_' + ${env.BUILD_NUMBER} + '.tf',
                 type: 'tf']
-            ]
-          )
+                ]
+            )
+          }
         }
       }
       stage ('Terraform apply') {
@@ -55,10 +57,12 @@ pipeline {
             }
         }
         steps {
-          withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws_creds', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'], sshUserPrivateKey(credentialsId: 'aws_key', keyFileVariable: '', passphraseVariable: '', usernameVariable: 'con_user_jen')]) {
-            sh "terraform apply --auto-approve -var 'region=${params.region}' -var 'connection-user=${con_user_jen}' -var 'AWS_CREDS=${AWS_ACCESS_KEY_ID}:${AWS_SECRET_ACCESS_KEY}' -var 's3_folder_path=${params.s3_folder_path}' -var 'data_folder_path=${params.data_folder_path}' /tmp/source/bakery-01/shahar-PRs/bakery-project/"
+          dir ('/tmp/source/bakery-01/shahar-PRs/bakery-project/') {
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws_creds', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'], sshUserPrivateKey(credentialsId: 'aws_key', keyFileVariable: '', passphraseVariable: '', usernameVariable: 'con_user_jen')]) {
+            sh "terraform apply --auto-approve -var 'region=${params.region}' -var 'connection-user=${con_user_jen}' -var 'AWS_CREDS=${AWS_ACCESS_KEY_ID}:${AWS_SECRET_ACCESS_KEY}' -var 's3_folder_path=${params.s3_folder_path}' -var 'data_folder_path=${params.data_folder_path}' \"out_${env.BUILD_NUMBER}.tf\""
           }
         }
       }
     }
+  }
 }
