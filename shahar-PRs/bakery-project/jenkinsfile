@@ -42,7 +42,7 @@ pipeline {
         steps {
             withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws_creds', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'], sshUserPrivateKey(credentialsId: 'aws_key', keyFileVariable: '', passphraseVariable: '', usernameVariable: 'con_user_jen'), usernamePassword(credentialsId: 'nexus-creds', passwordVariable: 'nexus_pass', usernameVariable: 'nexus_user')]) {
             sh "terraform apply --auto-approve -var 'region=${params.region}' -var 'connection-user=${con_user_jen}' -var 'AWS_CREDS=${AWS_ACCESS_KEY_ID}:${AWS_SECRET_ACCESS_KEY}' -var 's3_folder_path=${params.s3_folder_path}' -var 'data_folder_path=${params.data_folder_path}' /tmp/source/bakery-01/shahar-PRs/bakery-project/"
-            sh "curl -v -k -u ${nexus_user}:${nexus_pass} --upload-file /var/jenkins_home/workspace/${$JOB_NAME}/terraform.tfstate http://35.180.123.36:8081/nexus/content/repositories/test/123/"
+            sh "curl -v -k -u ${nexus_user}:${nexus_pass} --upload-file /var/jenkins_home/workspace/${JOB_NAME}/terraform.tfstate http://35.180.123.36:8081/nexus/content/repositories/test/123/"
           }
         }
       }
