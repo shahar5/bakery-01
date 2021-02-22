@@ -29,7 +29,7 @@ pipeline {
             }
         }
         steps {
-            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws_creds', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'], sshUserPrivateKey(credentialsId: 'aws_key', keyFileVariable: '', passphraseVariable: '', usernameVariable: 'con_user_jen')]) {
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws_creds', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'], sshUserPrivateKey(credentialsId: 'aws_key', keyFileVariable: '', passphraseVariable: '', usernameVariable: 'con_user_jen'), usernamePassword(credentialsId: 'nexus-creds', passwordVariable: 'nexus_pass', usernameVariable: 'nexus_user')]) {
               sh "terraform plan -var 'region=${params.region}' -var 'connection-user=${con_user_jen}' -var 'AWS_CREDS=${AWS_ACCESS_KEY_ID}:${AWS_SECRET_ACCESS_KEY}' -var 'nexus_user=${nexus_user}' -var 'nexus_pass=${nexus_pass}' -var 'nexus_ip=${params.nexus_ip}' -var 's3_folder_path=${params.s3_folder_path}' -var 'data_folder_path=${params.data_folder_path}' /tmp/source/bakery-01/shahar-PRs/bakery-project/"
             }
         }
