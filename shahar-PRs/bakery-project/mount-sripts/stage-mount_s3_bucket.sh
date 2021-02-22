@@ -6,8 +6,6 @@ MOUNT_POINT=$(ls -la /home/ubuntu/ | grep bucket  > /tmp/mp-check.txt && cat /tm
 # AWS_CREDS get value on build from jenkins creds
 AWS_CREDS=$1
 s3_folder_path=$2
-NEXUS_CREDS=$3
-nexus_ip=$4
 # run only if $MOUNT_POINT is NULL
 if [ -z "$MOUNT_POINT" ]; then
   rm /tmp/mp-check.txt
@@ -18,8 +16,6 @@ if [ -z "$MOUNT_POINT" ]; then
   mkdir /home/ubuntu/$s3_folder_path
   # -o umask... is for setting permissions on objects in s3 bucket after mount,
   # otherwise there is none. 0007 stand for owner and group full control
-  s3fs bakery-bucket /home/ubuntu/$s3_folder_path -o umask=0007,uid=1000
+  s3fs bakery-bucket-2 /home/ubuntu/$s3_folder_path -o umask=0007,uid=1000
   date >> /home/ubuntu/$s3_folder_path/my_file
-  curl -X GET -u $NEXUS_CREDS http://$nexus_ip:8081/nexus/content/repositories/test/nexus_txt_file/txt_from_nexus.txt -O
-  mv txt_from_nexus.txt /home/ubuntu/$s3_folder_path/txt_from_nexus.txt
 fi
