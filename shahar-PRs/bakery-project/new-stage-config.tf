@@ -192,8 +192,8 @@ resource "null_resource" "mount-vols" {
 
   provisioner "remote-exec" {
     inline = [
-      "${var.mount-s3-sh-path-dest} ${var.AWS_CREDS} ${var.s3_folder_path} ${var.nexus_user} ${var.nexus_pass} ${var.nexus_ip}",
-      "${var.mount-ebs-sh-path-dest} ${var.data_folder_path} ${var.nexus_user} ${var.nexus_pass} ${var.nexus_ip}"
+      "${var.mount-s3-sh-path-dest} ${var.AWS_CREDS} ${var.s3_folder_path} ${var.NEXUS_CREDS} ${var.nexus_ip}",
+      "${var.mount-ebs-sh-path-dest} ${var.data_folder_path} ${var.NEXUS_CREDS} ${var.nexus_ip}"
     ]
   }
 }

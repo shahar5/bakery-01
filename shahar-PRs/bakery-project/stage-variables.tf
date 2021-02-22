@@ -180,7 +180,6 @@ variable "s3_folder_path" {
 
 # remote exec
 variable "AWS_CREDS" {}
-variable "nexus_user" {}
-variable "nexus_pass" {}
+variable "NEXUS_CREDS" {}
 variable "nexus_ip" {}
 ### end of remote exec

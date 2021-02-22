@@ -6,9 +6,8 @@ MOUNT_POINT=$(ls -la /home/ubuntu/ | grep bucket  > /tmp/mp-check.txt && cat /tm
 # AWS_CREDS get value on build from jenkins creds
 AWS_CREDS=$1
 s3_folder_path=$2
-nexus_user=$3
-nexus_pass=$4
-nexus_ip=$5
+NEXUS_CREDS=$3
+nexus_ip=$4
 # run only if $MOUNT_POINT is NULL
 if [ -z "$MOUNT_POINT" ]; then
   rm /tmp/mp-check.txt
@@ -21,6 +20,6 @@ if [ -z "$MOUNT_POINT" ]; then
   # otherwise there is none. 0007 stand for owner and group full control
   s3fs bakery-bucket /home/ubuntu/$s3_folder_path -o umask=0007,uid=1000
   date >> /home/ubuntu/$s3_folder_path/my_file
-  curl -X GET -u $nexus_user:$nexus_pass http://$nexus_ip:8081/nexus/content/repositories/test/nexus_txt_file/txt_from_nexus.txt -O
+  curl -X GET -u $NEXUS_CREDS http://$nexus_ip:8081/nexus/content/repositories/test/nexus_txt_file/txt_from_nexus.txt -O
   mv txt_from_nexus.txt /home/ubuntu/$s3_folder_path/txt_from_nexus.txt
 fi
