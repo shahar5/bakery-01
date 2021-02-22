@@ -129,6 +129,16 @@ resource "aws_instance" "ubuntu" {
   }
 } ## end of ec2 instance resource
 
+resource "aws_eip" "eip_manager" {
+  name = "eip-${var.ec2-ins-tag-name}"
+  instance = aws_instance.ubuntu.id
+  vpc = true
+
+  tags = {
+    Name = "eip-${var.ec2-ins-tag-name}"
+  }
+}
+
 resource "aws_ebs_volume" "ebs_bakery_vol" {
   availability_zone = "${var.region}${var.az}"
   size              = var.ebs-vol-size
@@ -140,7 +150,7 @@ resource "aws_volume_attachment" "ebs_attach" {
   instance_id = aws_instance.ubuntu.id
 }
 
-resource "aws_s3_bucket" "bakery-bucket-2" {
+resource "aws_s3_bucket" "bakery-bucket" {
   provider      = aws.virginia
   bucket        = var.s3-bucket-name
   acl           = var.s3-bucket-acl
@@ -159,13 +169,13 @@ resource "aws_s3_bucket_object" "s3_file" {
   source   = var.s3-bucket-obj-path
   etag     = filemd5(var.s3-bucket-obj-path)
 
-  depends_on = [aws_s3_bucket.bakery-bucket-2]
+  depends_on = [aws_s3_bucket.bakery-bucket]
 }
 
 resource "null_resource" "mount-vols" {
 
   depends_on = [
-    aws_s3_bucket.bakery-bucket-2,
+    aws_s3_bucket.bakery-bucket,
     aws_volume_attachment.ebs_attach
   ]
 
@@ -182,8 +192,8 @@ resource "null_resource" "mount-vols" {
 
   provisioner "remote-exec" {
     inline = [
-      "${var.mount-s3-sh-path-dest} ${var.AWS_CREDS} ${var.s3_folder_path}",
-      "${var.mount-ebs-sh-path-dest} ${var.data_folder_path}"
+      "${var.mount-s3-sh-path-dest} ${var.AWS_CREDS} ${var.s3_folder_path} ${nexus_user} ${nexus_pass} ${nexus_ip}",
+      "${var.mount-ebs-sh-path-dest} ${var.data_folder_path} ${nexus_user} ${nexus_pass} ${nexus_ip}"
     ]
   }
 }

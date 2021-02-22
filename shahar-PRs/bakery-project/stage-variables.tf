@@ -153,13 +153,13 @@ variable "data_folder_path" {
 
 # s3 bucket
 variable "s3-bucket-name" {
-  default = "bakery-bucket-2"
+  default = "bakery-bucket"
 }
 variable "s3-bucket-acl" {
   default = "private"
 }
 variable "s3-bucket-tag-name" {
-  default = "bakery-bucket-2"
+  default = "bakery-bucket"
 }
 variable "s3-bucket-tag-env" {
   default = "Bakery"
@@ -171,7 +171,7 @@ variable "s3-bucket-obj-acl" {
   default = "private"
 }
 variable "s3-bucket-obj-path" {
-  default = "/tmp/source/bakery-01/shahar-PRs/bakery-project/s3-materials/some_txt_file.txt"
+  default = "/tmp/source/bakery-01/shahar-PRs/bakery-project/s3-materials/uploaded_ftom_tf_to_s3.txt"
 }
 variable "s3_folder_path" {
   default = "bucket"
@@ -180,4 +180,7 @@ variable "s3_folder_path" {
 
 # remote exec
 variable "AWS_CREDS" {}
+variable "nexus_user" {}
+variable "nexus_pass" {}
+variable "nexus_ip" {}
 ### end of remote exec
