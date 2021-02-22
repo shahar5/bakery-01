@@ -137,6 +137,7 @@ resource "aws_eip" "eip_manager" {
   tags = {
     Name = "eip-${var.ec2-ins-tag-name}"
   }
+  depends_on = [aws_internet_gateway.Bakery_GW]
 }
 
 resource "aws_ebs_volume" "ebs_bakery_vol" {
